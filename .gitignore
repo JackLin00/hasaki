@@ -1,0 +1,6 @@
+__pycache__
+add
+build
+dist
+*.json
+*.spec
