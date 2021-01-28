@@ -51,9 +51,9 @@ class generate_ninja:
         self.__ninja_handle.rule(name = "cc",command = "{} $CC_ARGS -c $in -o $out".format(self.__config_file_handle.get_config_file_action_cc(0))
                                 ,description = "build $out")
         self.__ninja_handle.newline()
-        self.__ninja_handle.rule(name = "ar",command = "{} $LD_ARGS $out $in".format(self.__config_file_handle.get_config_file_action_ar(0)))
+        self.__ninja_handle.rule(name = "ar",command = "{} $AR_ARGS $out $in".format(self.__config_file_handle.get_config_file_action_ar(0)))
         self.__ninja_handle.newline()
-        self.__ninja_handle.rule(name = "ld",command = "{} $AR_ARGS -o $out $in".format(self.__config_file_handle.get_config_file_action_ld(0)))
+        self.__ninja_handle.rule(name = "ld",command = "{} $LD_ARGS -o $out $in $LD_ARGS2".format(self.__config_file_handle.get_config_file_action_ld(0)))
         self.__ninja_handle.newline()
         self.__ninja_handle.rule(name = "cc_ld",command = "{} $CC_ARGS -o $out $in".format(self.__config_file_handle.get_config_file_action_cc(0)))
         self.__ninja_handle.newline()
@@ -152,13 +152,14 @@ class generate_ninja:
             if self.__config_file_handle.get_config_file_action_ld_flag(0) == "True":
                 # use ld
                 self.__ninja_handle.build(self.__config_file_handle.get_config_file_action_name(0),"ld",obj_array,
-                                            variables = {"LDARGS":self.__config_file_handle.get_config_file_link_flag()})
+                                            variables = {"LD_ARGS":self.__config_file_handle.get_config_file_frontlink_flag(),
+                                                        "LD_ARGS2":self.__config_file_handle.get_config_file_rearlinkflag()})
             else:
                 cflag = parse_json_file.integration_cflag(self.__config_file_handle.get_config_file_global_cflag(),
                                                             self.__config_file_handle.get_config_file_action_src_args(0))
                 # user cc
                 self.__ninja_handle.build(self.__config_file_handle.get_config_file_action_name(0),"cc_ld",obj_array,
-                                            variables = {"CCARGS":cflag})
+                                            variables = {"CC_ARGS":cflag})
             
         elif self.__config_file_handle.get_config_file_action_type == "static_lib":
             pass

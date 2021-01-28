@@ -7,7 +7,10 @@ template = """
     "global_cflag": [
         "add global cflag in there"
     ],
-    "link_flag": [
+    "front_link_flag": [
+        "add link flag in there"
+    ],
+    "rear_link_flag":[
         "add link flag in there"
     ],
     "action": [{

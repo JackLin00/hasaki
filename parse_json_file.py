@@ -162,7 +162,8 @@ class parse_config_json_file:
     def __init__(self,config_file_path=None):
         # config file option
         self.__global_cflag = ""
-        self.__global_linkflag = ""
+        self.__global_frontlinkflag = ""
+        self.__global_rearlinkflag = ""
         self.__prebuild_cmd = []
         self.__postbuild_cmd = []
         # tmp var
@@ -194,8 +195,11 @@ class parse_config_json_file:
         if "global_cflag" not in self.__config_json_entity:
             print("parse config file error.happend in parse global_cflag")
             sys.exit()
-        if "link_flag" not in self.__config_json_entity:
-            print("parse config file error.happend in parse link_flag")
+        if "front_link_flag" not in self.__config_json_entity:
+            print("parse config file error.happend in parse front_link_flag")
+            sys.exit()
+        if "rear_link_flag" not in self.__config_json_entity:
+            print("parse config file error.happend in parse rear_link_flag")
             sys.exit()
         if "prebuild_action" not in self.__config_json_entity:
             print("parse config file error.happend in parse global_cflag")
@@ -210,7 +214,8 @@ class parse_config_json_file:
 
     def __show_all_parse_option(self):
         print("field:{}.valud:{}".format("global_cflag",self.get_config_file_global_cflag()))
-        print("field:{}.valud:{}".format("link_flag",self.get_config_file_link_flag()))
+        print("field:{}.valud:{}".format("frontlink_flag",self.get_config_file_frontlink_flag()))
+        print("field:{}.valud:{}".format("rearlink_flag",self.get_config_file_rearlinkflag()))
         print("field:{}.valud:{}".format("prebuild_action",self.get_config_file_prebuild_cmd()))
         print("field:{}.valud:{}".format("postbuild_action",self.get_config_file_postbuild_cmd()))
 
@@ -242,7 +247,8 @@ class parse_config_json_file:
     def start_parse(self):
         # parse config file
         self.__global_cflag = self.__config_json_entity["global_cflag"]
-        self.__global_linkflag = self.__config_json_entity["link_flag"]
+        self.__global_frontlinkflag = self.__config_json_entity["front_link_flag"]
+        self.__global_rearlinkflag = self.__config_json_entity["rear_link_flag"]
         self.__prebuild_cmd = self.__config_json_entity["prebuild_action"]
         self.__postbuild_cmd = self.__config_json_entity["postbuild_action"]
         # parse action - only parse action 0
@@ -256,8 +262,11 @@ class parse_config_json_file:
     def get_config_file_global_cflag(self):
         return self.__global_cflag
 
-    def get_config_file_link_flag(self):
-        return self.__global_linkflag
+    def get_config_file_frontlink_flag(self):
+        return self.__global_frontlinkflag
+
+    def get_config_file_rearlinkflag(self):
+        return self.__global_rearlinkflag
 
     def get_config_file_prebuild_cmd(self):
         return self.__prebuild_cmd

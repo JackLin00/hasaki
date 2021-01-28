@@ -20,7 +20,7 @@ Hasaki 是一个通用的C/C++的构建工具，它的理念是 ``保持简单  
 
 ##### 使用方法
 
-在 [这里](https://gitee.com/JackLinXX/dashboard/projects/JackLinXX/hasaki/releases/V0.1) 下载 `` windows `` 的可执行文件，并将其放置到你的环境变量目录之中。然后开始下面的旅程。
+在 [这里](https://github.com/JackLin00/hasaki/releases/tag/v0.1) 下载 `` windows `` 的可执行文件，并将其放置到你的环境变量目录之中。然后开始下面的旅程。
 
 hasaki 现支持以下子命令：
 
