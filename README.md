@@ -137,7 +137,10 @@ int sub(int a,int b){
        "global_cflag": [
            ""
        ],
-       "link_flag": [
+       "front_link_flag": [
+           ""
+       ],
+       "rear_link_flag":[
            ""
        ],
        "action": [{
