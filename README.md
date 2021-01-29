@@ -90,8 +90,11 @@ int sub(int a,int b){
        "global_cflag": [  
            "add global cflag in there"    # 全局的cflag
        ],
-       "link_flag": [
-           "add link flag in there"       # 程序链接时的参数
+       "front_link_flag": [
+           "add link flag in there"       # 程序链接时的参数  -- 这部分参数放在前面
+       ],
+       "rear_link_flag":[
+           "add link flag in there"       # 程序链接时的参数  -- 这部分参数放在后面
        ],
        "action": [{
            "name": "action name",         # 项目名称
