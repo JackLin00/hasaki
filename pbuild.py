@@ -3,6 +3,11 @@ import subprocess
 import os
 
 
+
+def check_config_file_is_update():
+    pass
+
+
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     pass
 

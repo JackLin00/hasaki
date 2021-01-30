@@ -4,15 +4,14 @@ import argparse
 
 template = """
 {
-    "global_cflag": [
-        "add global cflag in there"
-    ],
-    "front_link_flag": [
-        "add link flag in there"
-    ],
-    "rear_link_flag":[
-        "add link flag in there"
-    ],
+    "global_cflag": {
+        "ccfront": ["add global cflag in front"],
+        "ccrear": ["add global clfag in rear"]
+    },
+    "global_link_flag": {
+        "ldfront": ["add link flag in front"],
+        "ldrear": ["add link flag in rear"]
+    },
     "action": [{
         "name": "action name",
         "type": "exe",

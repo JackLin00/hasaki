@@ -2,7 +2,7 @@ import argparse
 import parse_json_file
 import ninja_syntax
 import os
-
+import copy
 
 """
 cc CC_ARGS
@@ -48,14 +48,14 @@ class generate_ninja:
 
     def generate_compiler_rule(self):
         self.__ninja_handle.comment("this compile rule -- begin")
-        self.__ninja_handle.rule(name = "cc",command = "{} $CC_ARGS -c $in -o $out".format(self.__config_file_handle.get_config_file_action_cc(0))
+        self.__ninja_handle.rule(name = "cc",command = "{} $ccfront -c $in -o $out $ccrear".format(self.__config_file_handle.get_config_file_action_cc(0))
                                 ,description = "build $out")
         self.__ninja_handle.newline()
         self.__ninja_handle.rule(name = "ar",command = "{} $AR_ARGS $out $in".format(self.__config_file_handle.get_config_file_action_ar(0)))
         self.__ninja_handle.newline()
-        self.__ninja_handle.rule(name = "ld",command = "{} $LD_ARGS -o $out $in $LD_ARGS2".format(self.__config_file_handle.get_config_file_action_ld(0)))
+        self.__ninja_handle.rule(name = "ld",command = "{} $ldfront -o $out $in $ldrear".format(self.__config_file_handle.get_config_file_action_ld(0)))
         self.__ninja_handle.newline()
-        self.__ninja_handle.rule(name = "cc_ld",command = "{} $CC_ARGS -o $out $in".format(self.__config_file_handle.get_config_file_action_cc(0)))
+        self.__ninja_handle.rule(name = "cc_ld",command = "{} $ccfront -o $out $in $ccrear".format(self.__config_file_handle.get_config_file_action_cc(0)))
         self.__ninja_handle.newline()
         self.__ninja_handle.comment("this compile rule -- end")
         self.__ninja_handle.newline()
@@ -137,13 +137,11 @@ class generate_ninja:
                 xin = "../" + i + "/" + j
                 xout = i + "/" + out
 
-                cflag = parse_json_file.integration_cflag(self.__config_file_handle.get_config_file_global_cflag(),
-                                                            self.__config_file_handle.get_config_file_action_src_args(0))
+                cflag = copy.deepcopy(self.__config_file_handle.get_config_file_global_cflag())
+                cflag["ccfront"].extend(self.__config_file_handle.get_config_file_action_src_args(0))
+                cflag["ccfront"].extend(parse_json_file.intergration_inc(self.__config_file_handle.get_config_file_action_inc_path(0)))
 
-
-                cflag += parse_json_file.intergration_inc(self.__config_file_handle.get_config_file_action_inc_path(0))
-
-                self.__ninja_handle.build(xout,"cc",xin,variables = {"CC_ARGS":cflag})
+                self.__ninja_handle.build(xout,"cc",xin,variables = cflag)
                 obj_array.append(xout)
                 self.__ninja_handle.newline()
         
@@ -152,14 +150,14 @@ class generate_ninja:
             if self.__config_file_handle.get_config_file_action_ld_flag(0) == "True":
                 # use ld
                 self.__ninja_handle.build(self.__config_file_handle.get_config_file_action_name(0),"ld",obj_array,
-                                            variables = {"LD_ARGS":self.__config_file_handle.get_config_file_frontlink_flag(),
-                                                        "LD_ARGS2":self.__config_file_handle.get_config_file_rearlinkflag()})
+                                            variables = self.__config_file_handle.get_config_file_link_flag())
             else:
-                cflag = parse_json_file.integration_cflag(self.__config_file_handle.get_config_file_global_cflag(),
-                                                            self.__config_file_handle.get_config_file_action_src_args(0))
+                
+                cflag = copy.deepcopy(self.__config_file_handle.get_config_file_global_cflag())
+                cflag["ccfront"].extend(self.__config_file_handle.get_config_file_action_src_args(0))
                 # user cc
                 self.__ninja_handle.build(self.__config_file_handle.get_config_file_action_name(0),"cc_ld",obj_array,
-                                            variables = {"CC_ARGS":cflag})
+                                            variables=cflag)
             
         elif self.__config_file_handle.get_config_file_action_type == "static_lib":
             pass
